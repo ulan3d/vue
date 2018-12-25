@@ -8015,7 +8015,24 @@
       } catch (e) {
         done(e);
       }
+
+      runEventLoop();
     }
+  }
+
+  /* naive setTimeout implementation  */
+  var events = [];
+
+  function setTimeout(cb, delay) {
+    events.push({ cb: cb, delay: delay });
+  }
+
+  function runEventLoop() {
+   events.sort(function (a, b) {
+     return a.delay - b.delay;
+   }).forEach(function (el) {
+     el.cb();
+   });
   }
 
   /*  */
